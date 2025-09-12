@@ -1,11 +1,15 @@
 package com.example.library.service;
 
 import com.example.library.dto.category.request.CreateCategoryRequest;
+import com.example.library.dto.category.request.UpdateCategoryRequest;
 import com.example.library.dto.category.response.CategoryListResponse;
 import com.example.library.dto.category.response.CreatedCategoryResponse;
+import com.example.library.dto.category.response.GetByIdCategoryResponse;
+import com.example.library.dto.category.response.UpdatedCategoryResponse;
 import com.example.library.entity.Category;
 import com.example.library.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +53,28 @@ public class CategoryService {
 
     public void deleteCategoryById(Integer id){
         categoryRepository.deleteById(id);
+    }
+
+    public GetByIdCategoryResponse getCategoryById(int id){
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Bu id ile ilgili kategori bulunamadı."));
+
+        return new GetByIdCategoryResponse(
+                category.getId(),
+                category.getName()
+        );
+    }
+
+    public UpdatedCategoryResponse updateCategory(UpdateCategoryRequest updateRequest){
+        final Integer id = updateRequest.getId();
+        final Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Bu id ile ilgili kategori bulunamadı!"));
+
+        category.setName(updateRequest.getName());
+        categoryRepository.save(category);
+        return new UpdatedCategoryResponse(
+                category.getName()
+        );
     }
 
 

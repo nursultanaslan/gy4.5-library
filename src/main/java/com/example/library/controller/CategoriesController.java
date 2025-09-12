@@ -1,8 +1,11 @@
 package com.example.library.controller;
 
 import com.example.library.dto.category.request.CreateCategoryRequest;
+import com.example.library.dto.category.request.UpdateCategoryRequest;
 import com.example.library.dto.category.response.CategoryListResponse;
 import com.example.library.dto.category.response.CreatedCategoryResponse;
+import com.example.library.dto.category.response.GetByIdCategoryResponse;
+import com.example.library.dto.category.response.UpdatedCategoryResponse;
 import com.example.library.service.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -34,4 +37,16 @@ public class CategoriesController {
     public void deleteById(@PathVariable Integer id){
         categoryService.deleteCategoryById(id);
     }
+
+    @GetMapping("/{id}")
+    public GetByIdCategoryResponse getById(@PathVariable Integer id){
+        return categoryService.getCategoryById(id);
+    }
+
+    @PatchMapping()
+    public UpdatedCategoryResponse updateCategory(@RequestBody UpdateCategoryRequest updateRequest){
+        return categoryService.updateCategory(updateRequest);
+    }
+
+
 }
