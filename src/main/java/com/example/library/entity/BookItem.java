@@ -1,5 +1,6 @@
 package com.example.library.entity;
 
+import com.example.library.entity.enums.BookStatus;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -16,8 +17,7 @@ public class BookItem {
     @JoinColumn(name = "book_id" , nullable = false)
     private Book books;
 
-    @ManyToOne()
-    @JoinColumn(name = "book_status_id", nullable = false)
+    @Enumerated(EnumType.STRING)
     private BookStatus bookStatus;
 
     @OneToMany(mappedBy = "bookItems")
