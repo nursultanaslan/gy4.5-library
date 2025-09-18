@@ -16,16 +16,16 @@ public class Fine {
     private int fineAmount;
     @Column(name = "fine_date")
     private LocalDate fineDate;
-    @Column(name = "payment_status")
-    private String paymentStatus;
+    @Column(name = "is_paid")
+    private Boolean isPaid;
 
     @ManyToOne()
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
 
     @OneToOne()
-    @JoinColumn(name = "borrow_id", nullable = false)
-    private Borrow borrow;
+    @JoinColumn(name = "loan_id", nullable = false)
+    private Loan loan;
 
     public Integer getId() {
         return id;
@@ -51,27 +51,27 @@ public class Fine {
         this.fineDate = fineDate;
     }
 
-    public String getPaymentStatus() {
-        return paymentStatus;
+    public Boolean getPaid() {
+        return isPaid;
     }
 
-    public void setPaymentStatus(String paymentStatus) {
-        this.paymentStatus = paymentStatus;
+    public void setPaid(Boolean paid) {
+        isPaid = paid;
     }
 
-    public User getUser() {
-        return user;
+    public Member getMember() {
+        return member;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setMember(Member member) {
+        this.member = member;
     }
 
-    public Borrow getBorrow() {
-        return borrow;
+    public Loan getBorrow() {
+        return loan;
     }
 
-    public void setBorrow(Borrow borrow) {
-        this.borrow = borrow;
+    public void setBorrow(Loan loan) {
+        this.loan = loan;
     }
 }

@@ -1,35 +1,38 @@
 package com.example.library.entity;
 
+import com.example.library.entity.enums.LoanStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "borrows")
-public class Borrow {
+@Table(name = "loans")
+public class Loan {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "borrow_date")
-    private LocalDate borrowDate;
+    @Column(name = "loan_date")
+    private LocalDate loanDate;
     @Column(name = "due_date")
     private LocalDate dueDate;
     @Column(name = "return_date")
     private LocalDate returnDate;
-    @Column(name = "renewal_count")
-    private int renewalCount;
+
+    @Column(name = "loan_status")
+    @Enumerated(EnumType.STRING)
+    private LoanStatus loanStatus;
 
     @ManyToOne
     @JoinColumn(name = "book_item_id", nullable = false)
     private BookItem bookItems;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
 
-    @OneToOne(mappedBy = "borrow")
+    @OneToOne(mappedBy = "loan")
     private Fine fine;
 
     public Integer getId() {
@@ -40,12 +43,12 @@ public class Borrow {
         this.id = id;
     }
 
-    public LocalDate getBorrowDate() {
-        return borrowDate;
+    public LocalDate getLoanDate() {
+        return loanDate;
     }
 
-    public void setBorrowDate(LocalDate borrowDate) {
-        this.borrowDate = borrowDate;
+    public void setLoanDate(LocalDate loanDate) {
+        this.loanDate = loanDate;
     }
 
     public LocalDate getDueDate() {
@@ -64,12 +67,12 @@ public class Borrow {
         this.returnDate = returnDate;
     }
 
-    public int getRenewalCount() {
-        return renewalCount;
+    public LoanStatus getLoanStatus() {
+        return loanStatus;
     }
 
-    public void setRenewalCount(int renewalCount) {
-        this.renewalCount = renewalCount;
+    public void setLoanStatus(LoanStatus loanStatus) {
+        this.loanStatus = loanStatus;
     }
 
     public BookItem getBookItems() {
@@ -80,12 +83,12 @@ public class Borrow {
         this.bookItems = bookItems;
     }
 
-    public User getUser() {
-        return user;
+    public Member getMember() {
+        return member;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setMember(Member member) {
+        this.member = member;
     }
 
     public Fine getFine() {

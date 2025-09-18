@@ -21,7 +21,7 @@ public class BookItem {
     private BookStatus bookStatus;
 
     @OneToMany(mappedBy = "bookItems")
-    private List<Borrow> borrows;
+    private List<Loan> loans;
 
 
     public Integer getId() {
@@ -48,11 +48,11 @@ public class BookItem {
         this.bookStatus = bookStatus;
     }
 
-    public List<Borrow> getBorrows() {
-        return borrows;
+    public List<Loan> getBorrows() {
+        return loans;
     }
 
-    public void setBorrows(List<Borrow> borrows) {
-        this.borrows = borrows;
+    public void setBorrows(List<Loan> loans) {
+        this.loans = loans;
     }
 }

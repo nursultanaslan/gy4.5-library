@@ -1,4 +1,4 @@
-package com.example.library.dto.user.request;
+package com.example.library.dto.member.request;
 
 public class LoginRequest {
 

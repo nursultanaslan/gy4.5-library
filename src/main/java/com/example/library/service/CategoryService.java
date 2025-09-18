@@ -14,6 +14,7 @@ import org.webjars.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Service
 public class CategoryService {
 
@@ -56,9 +57,11 @@ public class CategoryService {
     }
 
     public GetByIdCategoryResponse getCategoryById(int id){
+        //Bussines Rules olacak
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Bu id ile ilgili kategori bulunamadı."));
 
+        //Mapper olacak
         return new GetByIdCategoryResponse(
                 category.getId(),
                 category.getName()

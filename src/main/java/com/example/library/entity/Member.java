@@ -1,13 +1,14 @@
 package com.example.library.entity;
 
-import com.example.library.entity.enums.Role;
+import com.example.library.entity.enums.MemberRole;
+import com.example.library.entity.enums.MembershipLevel;
 import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "members")
+public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,16 +21,26 @@ public class User {
 
     private String username;
     private String password;
+
+    @Column(unique = true)
     private String email;
+    private String phone;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    @Column(name = "membership_level")
+    private MembershipLevel membershipLevel;
 
-    @OneToMany(mappedBy = "user")
-    private List<Borrow> borrows;
+    @Enumerated(EnumType.STRING)
+    private MemberRole role;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "member")
+    private List<Loan> loans;
+
+    @OneToMany(mappedBy = "member")
     private List<Fine> fines;
+
+    @OneToMany(mappedBy = "member")
+    private List<Reservation> reservations;
 
     public Integer getId() {
         return id;
@@ -79,20 +90,36 @@ public class User {
         this.email = email;
     }
 
-    public Role getRole() {
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public MembershipLevel getMembershipLevel() {
+        return membershipLevel;
+    }
+
+    public void setMembershipLevel(MembershipLevel membershipLevel) {
+        this.membershipLevel = membershipLevel;
+    }
+
+    public MemberRole getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(MemberRole role) {
         this.role = role;
     }
 
-    public List<Borrow> getBorrows() {
-        return borrows;
+    public List<Loan> getLoans() {
+        return loans;
     }
 
-    public void setBorrows(List<Borrow> borrows) {
-        this.borrows = borrows;
+    public void setLoans(List<Loan> loans) {
+        this.loans = loans;
     }
 
     public List<Fine> getFines() {
@@ -101,5 +128,13 @@ public class User {
 
     public void setFines(List<Fine> fines) {
         this.fines = fines;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }

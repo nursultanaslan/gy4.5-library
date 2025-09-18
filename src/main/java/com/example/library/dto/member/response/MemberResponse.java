@@ -1,28 +1,31 @@
-package com.example.library.dto.user.response;
+package com.example.library.dto.member.response;
 
-import com.example.library.entity.Borrow;
+import com.example.library.entity.Loan;
 import com.example.library.entity.Fine;
 
 import java.util.List;
 
-public class UserResponse {
+public class MemberResponse {
 
     private Integer id;
     private String firstName;
     private String lastName;
     private String email;
-    private List<Borrow> borrows;
+    private String phone;
+
+    private List<Loan> loans;
     private List<Fine> fines;
 
-    public UserResponse() {
+    public MemberResponse() {
     }
 
-    public UserResponse(Integer id, String firstName, String lastName, String email, List<Borrow> borrows, List<Fine> fines) {
+    public MemberResponse(Integer id, String firstName, String lastName, String email, String phone, List<Loan> loans, List<Fine> fines) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.borrows = borrows;
+        this.phone = phone;
+        this.loans = loans;
         this.fines = fines;
     }
 
@@ -58,12 +61,20 @@ public class UserResponse {
         this.email = email;
     }
 
-    public List<Borrow> getBorrows() {
-        return borrows;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setBorrows(List<Borrow> borrows) {
-        this.borrows = borrows;
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public List<Loan> getBorrows() {
+        return loans;
+    }
+
+    public void setBorrows(List<Loan> loans) {
+        this.loans = loans;
     }
 
     public List<Fine> getFines() {

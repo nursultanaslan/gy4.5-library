@@ -2,7 +2,7 @@ package com.example.library.entity;
 
 import jakarta.persistence.*;
 
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "authors")
@@ -19,7 +19,7 @@ public class Author {
 
     //Yazarın kitapları
     @ManyToMany(mappedBy = "authors")
-    Set<Book> books;
+    List<Book> books;
 
     public Integer getId() {
         return id;
@@ -45,11 +45,11 @@ public class Author {
         this.bio = bio;
     }
 
-    public Set<Book> getBooks() {
+    public List<Book> getBooks() {
         return books;
     }
 
-    public void setBooks(Set<Book> books) {
+    public void setBooks(List<Book> books) {
         this.books = books;
     }
 }

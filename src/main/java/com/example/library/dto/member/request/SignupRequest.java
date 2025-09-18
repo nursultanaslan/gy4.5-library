@@ -1,6 +1,6 @@
-package com.example.library.dto.user.request;
+package com.example.library.dto.member.request;
 
-import com.example.library.entity.enums.Role;
+import com.example.library.entity.enums.MembershipLevel;
 
 public class SignupRequest {
     //Bir user oluştururken kullanıcıdan neler talep edeceğim
@@ -9,12 +9,12 @@ public class SignupRequest {
     private String username;
     private String email;
     private String password;
-    private Role role;
+    private MembershipLevel role;
 
     public SignupRequest() {
     }
 
-    public SignupRequest(String firstName, String lastName, String username, String email, String password, Role role) {
+    public SignupRequest(String firstName, String lastName, String username, String email, String password, MembershipLevel role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -63,11 +63,11 @@ public class SignupRequest {
         this.password = password;
     }
 
-    public Role getRole() {
+    public MembershipLevel getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(MembershipLevel role) {
         this.role = role;
     }
 }

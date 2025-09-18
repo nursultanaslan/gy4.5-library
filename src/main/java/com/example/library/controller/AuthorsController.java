@@ -6,6 +6,7 @@ import com.example.library.dto.author.response.AuthorListResponse;
 import com.example.library.dto.author.response.CreatedAuthorResponse;
 import com.example.library.dto.author.response.GetByIdAuthorResponse;
 import com.example.library.dto.author.response.UpdatedAuthorResponse;
+import com.example.library.entity.Author;
 import com.example.library.service.AuthorService;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,6 +47,9 @@ public class AuthorsController {
         authorService.deleteAuthorById(id);
     }
 
-
+    @GetMapping("/by-ids")
+    public List<Author> getAuthorsByIds(@RequestParam List<Integer> ids){
+        return authorService.getAuthorsByIds(ids);
+    }
 
 }

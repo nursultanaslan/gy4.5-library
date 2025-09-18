@@ -1,52 +1,37 @@
-package com.example.library.entity;
+package com.example.library.dto.book.response;
 
-import com.example.library.entity.enums.BookStatus;
-import jakarta.persistence.*;
+import com.example.library.entity.Author;
+import com.example.library.entity.Category;
+import com.example.library.entity.Publisher;
 
 import java.util.List;
 
-@Entity
-@Table(name = "books")
-public class Book {
+public class UpdatedBookResponse {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String title;
-    @Column(name = "total_page")
     private Integer totalPage;
-
-    @Column(unique = true)
     private String isbn;
-    @Column(name = "image_url")
     private String imageUrl;
 
-    @Enumerated(EnumType.STRING)
-    private BookStatus bookStatus;
-
-    @ManyToOne()
-    @JoinColumn(name = "publisher_id", nullable = false)
     private Publisher publisher;
-
-    @ManyToOne()
-    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    //Kitabın yazarları
-    //Owner Side - Book
-    @ManyToMany()
-    @JoinTable(
-            name = "book_author",
-            joinColumns = @JoinColumn(name = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "author_id"))
     private List<Author> authors;
 
-    @OneToMany(mappedBy = "books")
-    private List<BookItem> bookItems;
+    public UpdatedBookResponse() {
+    }
 
-    @OneToMany(mappedBy = "book")
-    private List<Reservation> reservations;
+    public UpdatedBookResponse(Integer id, String title, Integer totalPage, String isbn, String imageUrl, Publisher publisher, Category category, List<Author> authors) {
+        this.id = id;
+        this.title = title;
+        this.totalPage = totalPage;
+        this.isbn = isbn;
+        this.imageUrl = imageUrl;
+        this.publisher = publisher;
+        this.category = category;
+        this.authors = authors;
+    }
 
     public Integer getId() {
         return id;
@@ -88,14 +73,6 @@ public class Book {
         this.imageUrl = imageUrl;
     }
 
-    public BookStatus getBookStatus() {
-        return bookStatus;
-    }
-
-    public void setBookStatus(BookStatus bookStatus) {
-        this.bookStatus = bookStatus;
-    }
-
     public Publisher getPublisher() {
         return publisher;
     }
@@ -118,13 +95,5 @@ public class Book {
 
     public void setAuthors(List<Author> authors) {
         this.authors = authors;
-    }
-
-    public List<BookItem> getBookItems() {
-        return bookItems;
-    }
-
-    public void setBookItems(List<BookItem> bookItems) {
-        this.bookItems = bookItems;
     }
 }

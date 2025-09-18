@@ -43,7 +43,7 @@ public class CategoriesController {
         return categoryService.getCategoryById(id);
     }
 
-    @PatchMapping()
+    @PutMapping()
     public UpdatedCategoryResponse updateCategory(@RequestBody UpdateCategoryRequest updateRequest){
         return categoryService.updateCategory(updateRequest);
     }

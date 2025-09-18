@@ -15,27 +15,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
- * kategori ekle -> add
- * tüm kategorileri listele -> getAll
- * kategori sil -> delete
- *
- *
- * idye göre kategori getir -> getCategoryById
- * kategori güncelle -> update */
+ * yazar ekle -> add
+ * tüm yazarları listele -> getAll
+ * yazar sil -> delete
+ * idye göre yazar getir -> getCategoryById
+ * yazarı güncelle -> update */
 @Service
 public class AuthorService {
-    private final AuthorRepository authorRepository;
 
+    private final AuthorRepository authorRepository;
     public AuthorService(AuthorRepository authorRepository) {
         this.authorRepository = authorRepository;
     }
 
     public CreatedAuthorResponse add(CreateAuthorRequest authorRequest){
+        //Manual Mapping - Dto->Entity
         Author author = new Author();
         author.setFullName(authorRequest.getFullName());
         author.setBio(authorRequest.getBio());
         authorRepository.save(author);
 
+        //Manual Mapping - Entity->Dto
         return new CreatedAuthorResponse(
                 author.getFullName(),
                 author.getBio()
@@ -43,6 +43,7 @@ public class AuthorService {
     }
 
     public List<AuthorListResponse> getAllAuthors(){
+
         List<Author> authorList = authorRepository.findAll();
         List<AuthorListResponse> authorListResponses = new ArrayList<>();
         for (Author author : authorList) {
@@ -63,11 +64,20 @@ public class AuthorService {
         );
     }
 
+    public List<Author> getAuthorsByIds(List<Integer> ids){
+        List<Author> authors = authorRepository.findAllById(ids);
+        if (authors.size() != ids.size()){
+            throw new NotFoundException("Bir veya daha fazla yazar bulunamadı!");
+        }
+        return authors;
+    }
+
     public UpdatedAuthorResponse updateAuthor(UpdateAuthorRequest updateRequest){
         final Integer id = updateRequest.getId();
         final Author author = authorRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Bu id ile ilgili yazar bulunamadı."));
 
+//        author.setId(updateRequest.getId());
         author.setFullName(updateRequest.getFullName());
         author.setBio(updateRequest.getBio());
         authorRepository.save(author);
