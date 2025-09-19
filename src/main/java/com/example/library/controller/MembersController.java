@@ -1,28 +1,41 @@
 package com.example.library.controller;
 
-import com.example.library.dto.member.request.MemberCreateRequest;
-import com.example.library.dto.member.request.SignupRequest;
+import com.example.library.dto.member.request.CreateMemberRequest;
+import com.example.library.dto.member.response.GetByIdMemberResponse;
 import com.example.library.dto.member.response.MemberResponse;
+import com.example.library.entity.enums.MemberStatus;
 import com.example.library.service.MemberService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1/members")
 public class MembersController {
 
-    private final MemberService userService;
+    private final MemberService memberService;
 
-    public MembersController(MemberService userService) {
-        this.userService = userService;
+    public MembersController(MemberService memberService) {
+        this.memberService = memberService;
     }
 
     @PostMapping()
-    public MemberResponse create(@RequestBody MemberCreateRequest request){
-        return userService.create(request);
+    public MemberResponse create(@RequestBody CreateMemberRequest request){
+        return memberService.create(request);
+    }
+
+    @GetMapping("/{id}")
+    public GetByIdMemberResponse getById(@PathVariable Integer id){
+        return memberService.getById(id);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Integer id){
-        userService.deleteMember(id);
+    public void delete(@PathVariable Integer id){
+        memberService.deleteMember(id);
+    }
+
+    @GetMapping
+    public MemberResponse getByMemberStatusAndEmail(@RequestParam MemberStatus memberStatus,
+                                                    @RequestParam String email){
+        return memberService.getByMemberStatusAndEmail(memberStatus, email);
+
     }
 }

@@ -1,7 +1,12 @@
 package com.example.library.dto.category.request;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+
 public class UpdateCategoryRequest {
+    @Positive
     private Integer id;
+    @NotBlank
     private String name;
 
     public Integer getId() {

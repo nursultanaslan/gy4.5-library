@@ -1,6 +1,6 @@
 package com.example.library.entity.enums;
 
-public enum ReservationStatus {
+public enum MemberStatus {
     ACTIVE,
-    CANCELLED
+    BANNED
 }

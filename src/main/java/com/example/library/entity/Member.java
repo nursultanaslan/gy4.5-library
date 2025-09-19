@@ -1,6 +1,7 @@
 package com.example.library.entity;
 
 import com.example.library.entity.enums.MemberRole;
+import com.example.library.entity.enums.MemberStatus;
 import com.example.library.entity.enums.MembershipLevel;
 import jakarta.persistence.*;
 
@@ -29,6 +30,10 @@ public class Member {
     @Enumerated(EnumType.STRING)
     @Column(name = "membership_level")
     private MembershipLevel membershipLevel;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "member_status")
+    private MemberStatus memberStatus;
 
     @Enumerated(EnumType.STRING)
     private MemberRole role;
@@ -104,6 +109,14 @@ public class Member {
 
     public void setMembershipLevel(MembershipLevel membershipLevel) {
         this.membershipLevel = membershipLevel;
+    }
+
+    public MemberStatus getMemberStatus() {
+        return memberStatus;
+    }
+
+    public void setMemberStatus(MemberStatus memberStatus) {
+        this.memberStatus = memberStatus;
     }
 
     public MemberRole getRole() {

@@ -1,19 +1,15 @@
 package com.example.library.dto.member.response;
 
-import com.example.library.entity.Loan;
-import com.example.library.entity.Fine;
-import com.example.library.entity.Reservation;
 import com.example.library.entity.enums.MemberRole;
 import com.example.library.entity.enums.MemberStatus;
 import com.example.library.entity.enums.MembershipLevel;
 
-import java.util.List;
-
-public class MemberResponse {
+public class GetByIdMemberResponse {
 
     private Integer id;
     private String firstName;
     private String lastName;
+    private String username;
     private String email;
     private String phone;
 
@@ -21,25 +17,19 @@ public class MemberResponse {
     private MemberRole role;
     private MemberStatus memberStatus;
 
-    private List<Loan> loans;
-    private List<Fine> fines;
-    private List<Reservation> reservations;
-
-    public MemberResponse() {
+    public GetByIdMemberResponse() {
     }
 
-    public MemberResponse(Integer id, String firstName, String lastName, String email, String phone, MembershipLevel membershipLevel, MemberRole role, MemberStatus memberStatus, List<Loan> loans, List<Fine> fines, List<Reservation> reservations) {
+    public GetByIdMemberResponse(Integer id, String firstName, String lastName, String username, String email, String phone, MembershipLevel membershipLevel, MemberRole role, MemberStatus memberStatus) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.username = username;
         this.email = email;
         this.phone = phone;
         this.membershipLevel = membershipLevel;
         this.role = role;
         this.memberStatus = memberStatus;
-        this.loans = loans;
-        this.fines = fines;
-        this.reservations = reservations;
     }
 
     public Integer getId() {
@@ -64,6 +54,14 @@ public class MemberResponse {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -104,29 +102,5 @@ public class MemberResponse {
 
     public void setMemberStatus(MemberStatus memberStatus) {
         this.memberStatus = memberStatus;
-    }
-
-    public List<Loan> getLoans() {
-        return loans;
-    }
-
-    public void setLoans(List<Loan> loans) {
-        this.loans = loans;
-    }
-
-    public List<Fine> getFines() {
-        return fines;
-    }
-
-    public void setFines(List<Fine> fines) {
-        this.fines = fines;
-    }
-
-    public List<Reservation> getReservations() {
-        return reservations;
-    }
-
-    public void setReservations(List<Reservation> reservations) {
-        this.reservations = reservations;
     }
 }

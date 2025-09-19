@@ -2,10 +2,7 @@ package com.example.library.service;
 
 import com.example.library.dto.category.request.CreateCategoryRequest;
 import com.example.library.dto.category.request.UpdateCategoryRequest;
-import com.example.library.dto.category.response.CategoryListResponse;
-import com.example.library.dto.category.response.CreatedCategoryResponse;
-import com.example.library.dto.category.response.GetByIdCategoryResponse;
-import com.example.library.dto.category.response.UpdatedCategoryResponse;
+import com.example.library.dto.category.response.*;
 import com.example.library.entity.Category;
 import com.example.library.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
@@ -52,8 +49,11 @@ public class CategoryService {
         return categoryListResponses;
     }
 
-    public void deleteCategoryById(Integer id){
+    public DeletedCategoryResponse delete(Integer id){
         categoryRepository.deleteById(id);
+        return new DeletedCategoryResponse(
+
+        );
     }
 
     public GetByIdCategoryResponse getCategoryById(int id){
@@ -76,19 +76,9 @@ public class CategoryService {
         category.setName(updateRequest.getName());
         categoryRepository.save(category);
         return new UpdatedCategoryResponse(
+                category.getId(),
                 category.getName()
         );
     }
 
-
-
-
-    /*
-    * kategori ekle -> add
-    * tüm kategorileri listele -> getAll
-    * kategori sil -> delete
-    *
-    *
-    * idye göre kategori getir -> getCategoryById
-    * kategori güncelle -> update */
 }

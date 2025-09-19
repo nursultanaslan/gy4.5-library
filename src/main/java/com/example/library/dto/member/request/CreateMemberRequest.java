@@ -1,27 +1,32 @@
 package com.example.library.dto.member.request;
 
-import com.example.library.entity.enums.MembershipLevel;
+import com.example.library.entity.enums.MemberRole;
+import jakarta.validation.constraints.*;
 
-public class SignupRequest {
-    //Bir user oluştururken kullanıcıdan neler talep edeceğim
+public class CreateMemberRequest {
+
+    @NotBlank
     private String firstName;
+    @NotBlank
     private String lastName;
+    @NotBlank
+    @Size(min = 4, max = 9)
     private String username;
-    private String email;
+
+    @NotBlank
+    @Size(min = 8, max = 10)
     private String password;
-    private MembershipLevel role;
 
-    public SignupRequest() {
-    }
+    @NotBlank
+    @Email
+    private String email;
 
-    public SignupRequest(String firstName, String lastName, String username, String email, String password, MembershipLevel role) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.username = username;
-        this.password = password;
-        this.role = role;
-        this.email = email;
-    }
+    @NotBlank
+    @Pattern(regexp = "^5[0-9]{9}$")
+    private String phone;
+
+    @NotNull
+    private MemberRole role;
 
     public String getFirstName() {
         return firstName;
@@ -37,14 +42,6 @@ public class SignupRequest {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getUsername() {
@@ -63,11 +60,27 @@ public class SignupRequest {
         this.password = password;
     }
 
-    public MembershipLevel getRole() {
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public MemberRole getRole() {
         return role;
     }
 
-    public void setRole(MembershipLevel role) {
+    public void setRole(MemberRole role) {
         this.role = role;
     }
 }

@@ -35,7 +35,7 @@ public class CategoriesController {
 
     @DeleteMapping("{id}")
     public void deleteById(@PathVariable Integer id){
-        categoryService.deleteCategoryById(id);
+        categoryService.delete(id);
     }
 
     @GetMapping("/{id}")
@@ -47,6 +47,4 @@ public class CategoriesController {
     public UpdatedCategoryResponse updateCategory(@RequestBody UpdateCategoryRequest updateRequest){
         return categoryService.updateCategory(updateRequest);
     }
-
-
 }

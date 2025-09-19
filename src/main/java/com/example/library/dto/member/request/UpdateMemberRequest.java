@@ -1,11 +1,11 @@
 package com.example.library.dto.member.request;
 
-import com.example.library.entity.enums.MembershipLevel;
 import jakarta.validation.constraints.*;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
-public class MemberCreateRequest {
+public class UpdateMemberRequest {
 
+    @NotNull
+    private Integer id;
     @NotBlank
     private String firstName;
     @NotBlank
@@ -26,8 +26,13 @@ public class MemberCreateRequest {
     @Pattern(regexp = "^5[0-9]{9}$")
     private String phone;
 
-    @NotNull
-    private MembershipLevel membershipLevel;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -75,13 +80,5 @@ public class MemberCreateRequest {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public MembershipLevel getMembershipLevel() {
-        return membershipLevel;
-    }
-
-    public void setMembershipLevel(MembershipLevel membershipLevel) {
-        this.membershipLevel = membershipLevel;
     }
 }

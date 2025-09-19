@@ -1,6 +1,7 @@
 package com.example.library.dto.category.response;
 
 public class CategoryListResponse {
+
     private String name;
 
     public CategoryListResponse() {
