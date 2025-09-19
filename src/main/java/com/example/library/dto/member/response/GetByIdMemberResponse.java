@@ -1,8 +1,11 @@
 package com.example.library.dto.member.response;
 
+import com.example.library.entity.Fine;
 import com.example.library.entity.enums.MemberRole;
 import com.example.library.entity.enums.MemberStatus;
 import com.example.library.entity.enums.MembershipLevel;
+
+import java.util.List;
 
 public class GetByIdMemberResponse {
 
@@ -16,11 +19,12 @@ public class GetByIdMemberResponse {
     private MembershipLevel membershipLevel;
     private MemberRole role;
     private MemberStatus memberStatus;
+    private List<Fine> fines;
 
     public GetByIdMemberResponse() {
     }
 
-    public GetByIdMemberResponse(Integer id, String firstName, String lastName, String username, String email, String phone, MembershipLevel membershipLevel, MemberRole role, MemberStatus memberStatus) {
+    public GetByIdMemberResponse(Integer id, String firstName, String lastName, String username, String email, String phone, MembershipLevel membershipLevel, MemberRole role, MemberStatus memberStatus, List<Fine> fines) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -30,6 +34,7 @@ public class GetByIdMemberResponse {
         this.membershipLevel = membershipLevel;
         this.role = role;
         this.memberStatus = memberStatus;
+        this.fines = fines;
     }
 
     public Integer getId() {
@@ -102,5 +107,13 @@ public class GetByIdMemberResponse {
 
     public void setMemberStatus(MemberStatus memberStatus) {
         this.memberStatus = memberStatus;
+    }
+
+    public List<Fine> getFines() {
+        return fines;
+    }
+
+    public void setFines(List<Fine> fines) {
+        this.fines = fines;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.library.mapper;
 
 import com.example.library.dto.member.request.CreateMemberRequest;
+import com.example.library.dto.member.response.DeletedMemberResponse;
 import com.example.library.dto.member.response.GetByIdMemberResponse;
 import com.example.library.dto.member.response.MemberResponse;
 import com.example.library.entity.Member;
@@ -21,6 +22,9 @@ public interface MemberMapper {
 
     GetByIdMemberResponse memberToGetByIdResponse(Member member);
 
-    MemberResponse memberTorMemberResponse(Member member);
+    MemberResponse memberToMemberResponse(Member member);
+
+    DeletedMemberResponse toDeletedMemberResponse(Member member);
+
 
 }

@@ -4,81 +4,67 @@ import com.example.library.dto.category.request.CreateCategoryRequest;
 import com.example.library.dto.category.request.UpdateCategoryRequest;
 import com.example.library.dto.category.response.*;
 import com.example.library.entity.Category;
+import com.example.library.mapper.CategoryMapper;
 import com.example.library.repository.CategoryRepository;
+import com.example.library.rules.CategoryBusinessRules;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
+import org.springframework.validation.annotation.Validated;
 
-import java.util.ArrayList;
 import java.util.List;
 
-
 @Service
+@Validated
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final CategoryBusinessRules categoryBusinessRules;
+    private final CategoryMapper categoryMapper;
 
-    public CategoryService(CategoryRepository categoryRepository) {
+    public CategoryService(CategoryRepository categoryRepository,
+                           CategoryBusinessRules categoryBusinessRules,
+                           CategoryMapper categoryMapper) {
         this.categoryRepository = categoryRepository;
+        this.categoryBusinessRules = categoryBusinessRules;
+        this.categoryMapper = CategoryMapper.INSTANCE;
     }
 
-    public CreatedCategoryResponse add(CreateCategoryRequest categoryRequest){
-        Category category = new Category();
-        category.setName(categoryRequest.getName());
-        categoryRepository.save(category);
+    public CreatedCategoryResponse add(@Valid CreateCategoryRequest request){
+        categoryBusinessRules.categoryShouldNotExistWithSameName(request.getName());
+        Category category = categoryMapper.toCategory(request);
+        category = categoryRepository.save(category);
 
-        return new CreatedCategoryResponse(
-                category.getId(),
-                category.getName()
-        );
+        return categoryMapper.toCreatedCategoryResponse(category);
     }
 
     public List<CategoryListResponse> getAll(){
         //veritabanındaki categorileri cektim ve bir listeye attım
         List<Category> categoryList = categoryRepository.findAll();
-        //Dto'ya ait listeyi oluşturdum
-        List<CategoryListResponse> categoryListResponses = new ArrayList<>();
-        for (Category category: categoryList){
-            //categori listesindeki her kategori için bir dto nesnesi oluşturdum
-            CategoryListResponse categoryResponse = new CategoryListResponse();
-            //gerekli alanları dto'ya set ettim
-            categoryResponse.setName(category.getName());
-            //ve bu dtoyu dto'ların olacagı listeye ekledim (categorylistresponses)
-            categoryListResponses.add(categoryResponse);
-        }
-        //DTO listesini return ettim.
-        return categoryListResponses;
+
+        return categoryMapper.toCategoryListResponse(categoryList);
+
     }
 
     public DeletedCategoryResponse delete(Integer id){
-        categoryRepository.deleteById(id);
-        return new DeletedCategoryResponse(
-
-        );
+        Category category = categoryBusinessRules.categoryShouldExistWithGivenId(id);
+        categoryRepository.delete(category);
+        return categoryMapper.toDeletedCategoryResponse(category);
     }
 
     public GetByIdCategoryResponse getCategoryById(int id){
-        //Bussines Rules olacak
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Bu id ile ilgili kategori bulunamadı."));
 
-        //Mapper olacak
-        return new GetByIdCategoryResponse(
-                category.getId(),
-                category.getName()
-        );
+        Category category = categoryBusinessRules.categoryShouldExistWithGivenId(id);
+        return categoryMapper.toGetByIdCategoryResponse(category);
     }
 
-    public UpdatedCategoryResponse updateCategory(UpdateCategoryRequest updateRequest){
-        final Integer id = updateRequest.getId();
-        final Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Bu id ile ilgili kategori bulunamadı!"));
+    public UpdatedCategoryResponse updateCategory(@Valid UpdateCategoryRequest updateRequest){
 
-        category.setName(updateRequest.getName());
-        categoryRepository.save(category);
-        return new UpdatedCategoryResponse(
-                category.getId(),
-                category.getName()
-        );
+        Category category = categoryBusinessRules.categoryShouldExistWithGivenId(updateRequest.getId());
+        categoryBusinessRules.categoryShouldNotExistWithSameName(updateRequest.getName());
+        category = categoryMapper.toCategory(updateRequest);
+        category = categoryRepository.save(category);
+
+        return categoryMapper.toUpdatedCategoryResponse(category);
     }
 
 }

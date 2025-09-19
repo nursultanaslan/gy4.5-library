@@ -29,13 +29,26 @@ public class MembersController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Integer id){
-        memberService.deleteMember(id);
+        memberService.delete(id);
     }
 
-    @GetMapping
+    @GetMapping()
     public MemberResponse getByMemberStatusAndEmail(@RequestParam MemberStatus memberStatus,
                                                     @RequestParam String email){
         return memberService.getByMemberStatusAndEmail(memberStatus, email);
+    }
+
+    @PutMapping("{id}")
+    public MemberResponse updateStatus(@PathVariable Integer id,
+                                       @RequestParam MemberStatus memberStatus){
+        return memberService.updateStatus(id, memberStatus);
 
     }
+
+    @GetMapping("/{id}/fines")
+    public GetByIdMemberResponse getByIdAndFine(@PathVariable Integer id,
+                                                @RequestParam Boolean isPaid){
+        return memberService.getByIdAndFine(id,isPaid);
+    }
+
 }
