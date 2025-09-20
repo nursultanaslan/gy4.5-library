@@ -17,5 +17,4 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
 
     Member findByMembershipLevel(MembershipLevel level);
 
-    List<Fine> findByMemberIdAndIsPaid(Integer id, Boolean isPaid);
 }

@@ -68,16 +68,5 @@ public class MemberService {
 
     // GET /api/members/{id}/fines?isPaid=false
     //cezası odenmemiş kullanıcıları getir
-    public GetByIdMemberResponse getByIdAndFine(Integer id, Boolean isPaid){
-        Member member = memberBusinessRules.memberShouldExistWithGivenId(id);
-        List<Fine> fines = memberRepository.findByMemberIdAndIsPaid(id, isPaid);
-
-
-        return memberMapper.memberToGetByIdResponse(member);
-    }
-
-    public MemberResponse updateMembership(MembershipLevel membershipLevel){
-        return null;
-    }
 
 }

@@ -2,21 +2,12 @@ package com.example.library.dto.book.request;
 
 import com.example.library.entity.enums.BookStatus;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 import java.util.List;
 
-/*başlık
- * sayfa sayısı
- * isbn numarası
- * yayın evi
- * categorisi
- * kitabın kapak fotografı
- * yazarı
- * kitabın varsa kopyaları
- * */
+
 public class CreateBookRequest {
     //Veritabanına bir book eklerken kullanıcıdan neler talep edeceğim?
     @NotBlank
@@ -31,9 +22,11 @@ public class CreateBookRequest {
 
     private BookStatus bookStatus;
 
+    @NotNull
     private Integer publisherId;
+    @NotNull
     private Integer categoryId;
-
+    @NotNull
     private List<Integer> authorId;
 
     public String getTitle() {

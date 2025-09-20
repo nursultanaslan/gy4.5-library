@@ -1,27 +1,36 @@
 package com.example.library.dto.book.request;
 
-import com.example.library.entity.Author;
-import com.example.library.entity.Book;
-import com.example.library.entity.Category;
-import com.example.library.entity.Publisher;
 import com.example.library.entity.enums.BookStatus;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 
 import java.util.List;
 
 public class UpdateBookRequest {
 
+    @Positive
     private Integer id;
+    @NotBlank
     private String title;
+    @NotNull
     private Integer totalPage;
+
+    @NotBlank
+    @Pattern(regexp = "^\\d{13}$")
     private String isbn;
+
     private String imageUrl;
 
     private BookStatus bookStatus;
 
-    private Publisher publisher;
-    private Category category;
-
-    private List<Author> authors;
+    @NotNull
+    private Integer publisherId;
+    @NotNull
+    private Integer categoryId;
+    @NotNull
+    private List<Integer> authorId;
 
     public Integer getId() {
         return id;
@@ -71,27 +80,27 @@ public class UpdateBookRequest {
         this.bookStatus = bookStatus;
     }
 
-    public Publisher getPublisher() {
-        return publisher;
+    public Integer getPublisherId() {
+        return publisherId;
     }
 
-    public void setPublisher(Publisher publisher) {
-        this.publisher = publisher;
+    public void setPublisherId(Integer publisherId) {
+        this.publisherId = publisherId;
     }
 
-    public Category getCategory() {
-        return category;
+    public Integer getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public List<Author> getAuthors() {
-        return authors;
+    public List<Integer> getAuthorId() {
+        return authorId;
     }
 
-    public void setAuthors(List<Author> authors) {
-        this.authors = authors;
+    public void setAuthorId(List<Integer> authorId) {
+        this.authorId = authorId;
     }
 }

@@ -15,7 +15,7 @@ public class BookItem {
 
     @ManyToOne()
     @JoinColumn(name = "book_id" , nullable = false)
-    private Book books;
+    private Book book;
 
     @Enumerated(EnumType.STRING)
     private BookStatus bookStatus;
@@ -32,12 +32,12 @@ public class BookItem {
         this.id = id;
     }
 
-    public Book getBooks() {
-        return books;
+    public Book getBook() {
+        return book;
     }
 
-    public void setBooks(Book books) {
-        this.books = books;
+    public void setBook(Book book) {
+        this.book = book;
     }
 
     public BookStatus getBookStatus() {
@@ -48,11 +48,11 @@ public class BookItem {
         this.bookStatus = bookStatus;
     }
 
-    public List<Loan> getBorrows() {
+    public List<Loan> getLoans() {
         return loans;
     }
 
-    public void setBorrows(List<Loan> loans) {
+    public void setLoans(List<Loan> loans) {
         this.loans = loans;
     }
 }

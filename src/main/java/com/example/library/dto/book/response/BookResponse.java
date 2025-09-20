@@ -1,53 +1,48 @@
-package com.example.library.entity;
+package com.example.library.dto.book.response;
 
+import com.example.library.entity.*;
 import com.example.library.entity.enums.BookStatus;
-import jakarta.persistence.*;
 
 import java.util.List;
 
-@Entity
-@Table(name = "books")
-public class Book {
+public class BookResponse {
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "title")
     private String title;
-    @Column(name = "total_page")
     private Integer totalPage;
-
-    @Column(name = "isbn", unique = true)
     private String isbn;
-    @Column(name = "image_url")
     private String imageUrl;
 
-    @Enumerated(EnumType.STRING)
     private BookStatus bookStatus;
 
-    @ManyToOne()
-    @JoinColumn(name = "publisher_id", nullable = false)
     private Publisher publisher;
-
-    @ManyToOne()
-    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    //Kitabın yazarları
-    //Owner Side - Book
-    @ManyToMany()
-    @JoinTable(
-            name = "book_author",
-            joinColumns = @JoinColumn(name = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "author_id"))
     private List<Author> authors;
-
-    @OneToMany(mappedBy = "book")
     private List<BookItem> bookItems;
-
-    @OneToMany(mappedBy = "book")
     private List<Reservation> reservations;
+
+    private long totalCopies;
+    private long availableCopies;
+
+    public BookResponse() {
+    }
+
+    public BookResponse(Integer id, String title, Integer totalPage, String isbn, String imageUrl, BookStatus bookStatus, Publisher publisher, Category category, List<Author> authors, List<BookItem> bookItems, List<Reservation> reservations, int totalCopies, int availableCopies) {
+        this.id = id;
+        this.title = title;
+        this.totalPage = totalPage;
+        this.isbn = isbn;
+        this.imageUrl = imageUrl;
+        this.bookStatus = bookStatus;
+        this.publisher = publisher;
+        this.category = category;
+        this.authors = authors;
+        this.bookItems = bookItems;
+        this.reservations = reservations;
+        this.totalCopies = totalCopies;
+        this.availableCopies = availableCopies;
+    }
 
     public Integer getId() {
         return id;
@@ -135,5 +130,21 @@ public class Book {
 
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
+    }
+
+    public long getTotalCopies() {
+        return totalCopies;
+    }
+
+    public void setTotalCopies(long totalCopies) {
+        this.totalCopies = totalCopies;
+    }
+
+    public long getAvailableCopies() {
+        return availableCopies;
+    }
+
+    public void setAvailableCopies(long availableCopies) {
+        this.availableCopies = availableCopies;
     }
 }

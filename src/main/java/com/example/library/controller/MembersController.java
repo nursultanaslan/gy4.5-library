@@ -42,13 +42,5 @@ public class MembersController {
     public MemberResponse updateStatus(@PathVariable Integer id,
                                        @RequestParam MemberStatus memberStatus){
         return memberService.updateStatus(id, memberStatus);
-
     }
-
-    @GetMapping("/{id}/fines")
-    public GetByIdMemberResponse getByIdAndFine(@PathVariable Integer id,
-                                                @RequestParam Boolean isPaid){
-        return memberService.getByIdAndFine(id,isPaid);
-    }
-
 }

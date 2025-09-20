@@ -1,8 +1,18 @@
 package com.example.library.dto.author.request;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
+
 public class UpdateAuthorRequest {
+    @Positive
     private Integer id;
+
+    @NotBlank
+    @Size(min = 8, max = 50)
     private String fullName;
+
+    @Size(min = 10, max = 255)
     private String bio;
 
     public Integer getId() {

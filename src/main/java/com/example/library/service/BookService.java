@@ -2,89 +2,78 @@ package com.example.library.service;
 
 import com.example.library.dto.book.request.CreateBookRequest;
 import com.example.library.dto.book.request.UpdateBookRequest;
+import com.example.library.dto.book.response.BookResponse;
 import com.example.library.dto.book.response.CreatedBookResponse;
 import com.example.library.dto.book.response.UpdatedBookResponse;
 import com.example.library.entity.*;
+import com.example.library.entity.enums.BookStatus;
+import com.example.library.mapper.BookMapper;
+import com.example.library.repository.BookItemRepository;
 import com.example.library.repository.BookRepository;
+import com.example.library.rules.BookBusinessRules;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
+import org.springframework.validation.annotation.Validated;
+
 
 import java.util.List;
 
 @Service
+@Validated
 public class BookService {
 
     private final BookRepository bookRepository;
     private final AuthorService authorService;
+    private final BookBusinessRules bookBusinessRules;
+    private final BookMapper bookMapper;
+    private final BookItemRepository bookItemRepository;
 
     public BookService(BookRepository bookRepository,
-                       AuthorService authorService) {
+                       AuthorService authorService,
+                       BookBusinessRules bookBusinessRules,
+                       BookMapper bookMapper,
+                       BookItemRepository bookItemRepository) {
         this.bookRepository = bookRepository;
         this.authorService = authorService;
+        this.bookBusinessRules = bookBusinessRules;
+        this.bookMapper = BookMapper.INSTANCE;
+        this.bookItemRepository = bookItemRepository;
     }
 
-    public CreatedBookResponse add(CreateBookRequest request){
-
-        Book book = new Book();
-        book.setTitle(request.getTitle());
-        book.setTotalPage(request.getTotalPage());
-        book.setIsbn(request.getIsbn());
-        book.setImageUrl(request.getImageUrl());
-        book.setBookStatus(request.getBookStatus());
-
-        Publisher publisher = new Publisher();
-        publisher.setId(request.getPublisherId());
-        book.setPublisher(publisher);
-
-        Category category = new Category();
-        category.setId(request.getCategoryId());
-        book.setCategory(category);
-
+    public CreatedBookResponse add(@Valid CreateBookRequest request){
+        bookBusinessRules.isbnMustBeUnique(request.getIsbn());
+        Book book = bookMapper.createBookRequestToBook(request);
 
         List<Author> authors = authorService.getAuthorsByIds(request.getAuthorId());
         book.setAuthors(authors);
 
         bookRepository.save(book);
 
-        return new CreatedBookResponse(
-                book.getTitle(),
-                book.getTotalPage(),
-                book.getBookStatus(),
-                book.getPublisher(),
-                book.getCategory(),
-                book.getAuthors()
-        );
+        return bookMapper.toCreatedBookResponse(book);
     }
 
-    public UpdatedBookResponse update(UpdateBookRequest request){
-        final Integer id = request.getId();
-        final Book book = bookRepository.findById(id)
-                .orElseThrow(()-> new NotFoundException("Bu id ile ilgili bir kitap bulunamadı!"));
+    public UpdatedBookResponse update(@Valid UpdateBookRequest request){
 
-        book.setId(request.getId());
-        book.setTitle(request.getTitle());
-        book.setTotalPage(request.getTotalPage());
-        book.setIsbn(request.getIsbn());
-        book.setImageUrl(request.getImageUrl());
-        book.setBookStatus(request.getBookStatus());
-        book.setPublisher(request.getPublisher());
-        book.setCategory(request.getCategory());
-        book.setAuthors(request.getAuthors());
-
+        Book book = bookBusinessRules.bookShouldExistWithGivenId(request.getId());
+        book = bookMapper.updateBookRequesToBook(request);
         bookRepository.save(book);
 
-        return new UpdatedBookResponse(
-                book.getId(),
-                book.getTitle(),
-                book.getTotalPage(),
-                book.getIsbn(),
-                book.getImageUrl(),
-                book.getPublisher(),
-                book.getCategory(),
-                book.getAuthors()
-        );
-
+        return bookMapper.toUpdatedBookResponse(book);
     }
 
+    public BookResponse getByIdCopyCounts(int bookId){
+        Book book = bookBusinessRules.bookShouldExistWithGivenId(bookId);
+
+        long totalCopies = bookItemRepository.countByBookId(bookId);
+        long availableCopies = bookItemRepository.countByBookIdAndBookStatus(bookId, BookStatus.ACTIVE);
+
+        BookResponse bookResponse = bookMapper.bookToBookResponse(book);
+
+        bookResponse.setTotalCopies(totalCopies);
+        bookResponse.setAvailableCopies(availableCopies);
+
+        return bookResponse;
+
+    }
 
 }

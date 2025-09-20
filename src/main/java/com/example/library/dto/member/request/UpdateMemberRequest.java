@@ -4,7 +4,7 @@ import jakarta.validation.constraints.*;
 
 public class UpdateMemberRequest {
 
-    @NotNull
+    @Positive
     private Integer id;
     @NotBlank
     private String firstName;
