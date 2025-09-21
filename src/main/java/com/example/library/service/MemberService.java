@@ -15,7 +15,6 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.List;
 
 
 @Service
@@ -26,7 +25,9 @@ public class MemberService {
     private final MemberBusinessRules memberBusinessRules;
     private final MemberMapper memberMapper;
 
-    public MemberService(MemberRepository memberRepository,MemberBusinessRules memberBusinessRules, MemberMapper memberMapper) {
+    public MemberService(MemberRepository memberRepository,
+                         MemberBusinessRules memberBusinessRules,
+                         MemberMapper memberMapper) {
         this.memberRepository = memberRepository;
         this.memberBusinessRules = memberBusinessRules;
         this.memberMapper = MemberMapper.INSTANCE;
@@ -34,6 +35,7 @@ public class MemberService {
 
     public MemberResponse create(@Valid CreateMemberRequest request){
 
+        memberBusinessRules.emailShouldBeUnique(request.getEmail());
         Member member = memberMapper.createMemberRequestToMember(request);
         memberRepository.save(member);
 

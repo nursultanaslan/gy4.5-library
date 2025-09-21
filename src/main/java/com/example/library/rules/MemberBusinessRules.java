@@ -1,21 +1,27 @@
 package com.example.library.rules;
 
 import com.example.library.entity.Member;
+import com.example.library.entity.enums.LoanStatus;
 import com.example.library.entity.enums.MemberStatus;
 import com.example.library.entity.enums.MembershipLevel;
+import com.example.library.repository.LoanRepository;
 import com.example.library.repository.MemberRepository;
 import org.springframework.stereotype.Component;
 import org.webjars.NotFoundException;
 
-//Buradaki methodları farklı classlar da kullanabilsin diye bu şekilde class oluşturuurz
+
 @Component
 public class MemberBusinessRules {
     //Business Ruleslar entitye özeldir ve kendi entitysine ait repositoryi entegre ederler
     //Ve kuralları kendi içlerinde yazarlar
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
+    private final LoanRepository loanRepository;
 
-    public MemberBusinessRules(MemberRepository memberRepository) {
+
+    public MemberBusinessRules(MemberRepository memberRepository,
+                               LoanRepository loanRepository) {
         this.memberRepository = memberRepository;
+        this.loanRepository = loanRepository;
     }
 
     public Member memberShouldExistWithGivenId(int id){
@@ -23,6 +29,7 @@ public class MemberBusinessRules {
                 .findById(id)
                 .orElseThrow(()-> new NotFoundException("Bu id ile ilgili bir üye bulunamadı!"));
     }
+
 
     //email benzersiz olmalı kuralı yaz
     public void emailShouldBeUnique(String email){
@@ -32,11 +39,6 @@ public class MemberBusinessRules {
         }
     }
 
-    //MembershipLeveli = STANDARD olan üyeler aktif ödünç kaydı MAX=3 olabilir. GOLD için MAX=5.
-    public void checkMaxLoanLimit(MembershipLevel level){
-        Member membershipLevel = memberRepository.findByMembershipLevel(level);
-
-    }
 
     //MemberStatusu= BANNED olan üyeler rezervasyon / ödünç yapamaz.
     public void checkMemberStatus(MemberStatus memberStatus){
@@ -46,6 +48,19 @@ public class MemberBusinessRules {
     }
 
 
+    //MembershipLeveli = STANDARD olan üyeler aktif ödünç kaydı MAX=3 olabilir. GOLD için MAX=5.
+    public void checkMaxLoanLimit(Member member){
+        long openLoanCount = loanRepository.countByMemberIdAndLoanStatus(member.getId(), LoanStatus.OPEN);
+        if (member.getMembershipLevel() == MembershipLevel.STANDARD){
+            if (openLoanCount > 3){
+                throw new RuntimeException("Standart üyelerin en fazla 3 açık kaydı olabilir");
+            }
+        } else if (member.getMembershipLevel() == MembershipLevel.GOLD) {
+            if (openLoanCount > 5){
+                throw new RuntimeException("Gold üyelerin en fazla 5 aktif ödünç kaydı olabilir");
+            }
+        }
+    }
 
 
 }

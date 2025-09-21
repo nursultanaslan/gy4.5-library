@@ -11,9 +11,10 @@ import org.mapstruct.factory.Mappers;
 public interface LoanMapper {
 
     LoanMapper INSTANCE = Mappers.getMapper(LoanMapper.class);
-//
-//    @Mapping(target = "", source = "")
-//    Loan loanCreateRequestToLoan(LoanCreateRequest loanRequest);
+
+    Loan loanCreateRequestToLoan(LoanCreateRequest loanRequest);
 
     LoanResponse createLoanRequestToLoanResponse(Loan loan);
+
+
 }
