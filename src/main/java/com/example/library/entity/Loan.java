@@ -26,7 +26,7 @@ public class Loan {
 
     @ManyToOne
     @JoinColumn(name = "book_item_id", nullable = false)
-    private BookItem bookItems;
+    private BookItem bookItem;
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
@@ -75,12 +75,12 @@ public class Loan {
         this.loanStatus = loanStatus;
     }
 
-    public BookItem getBookItems() {
-        return bookItems;
+    public BookItem getBookItem() {
+        return bookItem;
     }
 
-    public void setBookItems(BookItem bookItems) {
-        this.bookItems = bookItems;
+    public void setBookItem(BookItem bookItem) {
+        this.bookItem = bookItem;
     }
 
     public Member getMember() {

@@ -13,8 +13,10 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
 
     Member findByMemberStatusAndEmail(MemberStatus memberStatus, String email);
 
-//    Member findByIdAndMemberStatus(Integer id, MemberStatus memberStatus);
-
     Member findByMembershipLevel(MembershipLevel level);
+
+    Member findByEmail(String email);
+
+
 
 }

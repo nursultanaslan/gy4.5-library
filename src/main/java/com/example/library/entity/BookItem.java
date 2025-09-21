@@ -20,7 +20,7 @@ public class BookItem {
     @Enumerated(EnumType.STRING)
     private BookStatus bookStatus;
 
-    @OneToMany(mappedBy = "bookItems")
+    @OneToMany(mappedBy = "bookItem")
     private List<Loan> loans;
 
 

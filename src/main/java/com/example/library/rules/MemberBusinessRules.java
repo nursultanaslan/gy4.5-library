@@ -1,6 +1,7 @@
 package com.example.library.rules;
 
 import com.example.library.entity.Member;
+import com.example.library.entity.enums.MemberStatus;
 import com.example.library.entity.enums.MembershipLevel;
 import com.example.library.repository.MemberRepository;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,14 @@ public class MemberBusinessRules {
                 .orElseThrow(()-> new NotFoundException("Bu id ile ilgili bir üye bulunamadı!"));
     }
 
+    //email benzersiz olmalı kuralı yaz
+    public void emailShouldBeUnique(String email){
+        Member member = memberRepository.findByEmail(email);
+        if (member != null){
+            throw new RuntimeException("Bu email ile kayıt oluşturulmuş. Giriş yapmayı deneyin.");
+        }
+    }
+
     //MembershipLeveli = STANDARD olan üyeler aktif ödünç kaydı MAX=3 olabilir. GOLD için MAX=5.
     public void checkMaxLoanLimit(MembershipLevel level){
         Member membershipLevel = memberRepository.findByMembershipLevel(level);
@@ -30,9 +39,13 @@ public class MemberBusinessRules {
     }
 
     //MemberStatusu= BANNED olan üyeler rezervasyon / ödünç yapamaz.
-    public void checkMemberStatus(){
-
+    public void checkMemberStatus(MemberStatus memberStatus){
+        if(memberStatus.equals(MemberStatus.BANNED)){
+            throw new RuntimeException("BANNED üyeler ödünç veya rezervasyon yapamaz");
+        }
     }
+
+
 
 
 }

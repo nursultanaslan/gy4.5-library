@@ -42,6 +42,7 @@ public class BookBusinessRules {
         }
     }
 
+
     public void checkBookStatus(BookStatus bookStatus){
         if (bookStatus.equals(BookStatus.INACTIVE))
             throw new RuntimeException("Bu kitap aktif durumda olmadığından ödünç verilemez ve rezervasyon alınamaz");
