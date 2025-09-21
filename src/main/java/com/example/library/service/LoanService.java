@@ -1,21 +1,28 @@
 package com.example.library.service;
 
 import com.example.library.dto.loan.request.LoanCreateRequest;
+import com.example.library.dto.loan.request.LoanReturnRequest;
 import com.example.library.dto.loan.response.LoanResponse;
 import com.example.library.entity.BookItem;
 import com.example.library.entity.Loan;
 import com.example.library.entity.Member;
+import com.example.library.entity.enums.BookStatus;
 import com.example.library.mapper.LoanMapper;
+import com.example.library.repository.BookItemRepository;
 import com.example.library.repository.LoanRepository;
 import com.example.library.rules.*;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
 
 @Service
+@Validated
 public class LoanService {
 
     private final LoanRepository loanRepository;
+    private final BookItemRepository bookItemRepository;
     private final BookItemService bookItemService;
     private final BookItemBusinessRules bookItemBusinessRules;
     private final MemberBusinessRules memberBusinessRules;
@@ -25,6 +32,7 @@ public class LoanService {
     private final LoanMapper loanMapper;
 
     public LoanService(LoanRepository loanRepository,
+                       BookItemRepository bookItemRepository,
                        BookItemService bookItemService,
                        BookItemBusinessRules bookItemBusinessRules,
                        MemberBusinessRules memberBusinessRules,
@@ -32,6 +40,7 @@ public class LoanService {
                        FineBusinessRules fineBusinessRules,
                        LoanBusinessRules loanBusinessRules) {
         this.loanRepository = loanRepository;
+        this.bookItemRepository = bookItemRepository;
         this.bookItemService = bookItemService;
         this.bookItemBusinessRules = bookItemBusinessRules;
         this.memberBusinessRules = memberBusinessRules;
@@ -41,10 +50,13 @@ public class LoanService {
         this.loanMapper = LoanMapper.INSTANCE;
     }
 
-    public LoanResponse create(LoanCreateRequest loanRequest){
+    public LoanResponse create(@Valid LoanCreateRequest loanRequest){
 
-        BookItem bookItem = bookItemBusinessRules.bookItemShouldExistWithGivenId(loanRequest.getBookItems().getId());
-        Member member = memberBusinessRules.memberShouldExistWithGivenId(loanRequest.getMember().getId());
+        BookItem bookItem = bookItemBusinessRules.bookItemShouldExistWithGivenId(loanRequest.getBookItemId());
+        Member member = memberBusinessRules.memberShouldExistWithGivenId(loanRequest.getMemberId());
+
+        //Kitabın durumunu kontrol et. INACTIVE se ödünc verme ?
+        bookBusinessRules.checkBookStatus(bookItem.getBookStatus());
 
         //Kopyasını kontrol et. mevcut kopya sayısı > 0 olmalı
         long totalCopies = bookItemService.getTotalCopies(bookItem);
@@ -59,19 +71,29 @@ public class LoanService {
 
         memberBusinessRules.checkMaxLoanLimit(member);
 
-        //Kitabın durumunu kontrol et. INACTIVE se ödünc verme ?
-        bookBusinessRules.checkBookStatus(bookItem.getBookStatus());
-
         LocalDate loanDate = LocalDate.now();
         LocalDate dueDate = loanBusinessRules.calcDueDate(member);
 
         //bu kontrollerden geçtikten sonra loan kaydı oluşturulur.
         Loan loan = loanMapper.loanCreateRequestToLoan(loanRequest);
+        loan.setLoanDate(loanDate);
+        loan.setDueDate(dueDate);
         loanRepository.save(loan);
 
+        bookItem.setBookStatus(BookStatus.INACTIVE);
+        bookItemRepository.save(bookItem);
 
         return loanMapper.createLoanRequestToLoanResponse(loan);
 
     }
+
+//    private LoanResponse returnBook(LoanReturnRequest loanRequest){
+//        Loan loan = loanBusinessRules.loanShouldExist(loanRequest.getLoanId());
+//        LocalDate returnDate = LocalDate.now();
+//        loan.setReturnDate(returnDate);
+//
+//        loanBusinessRules.calcFineAmount(loan.getLoanDate(), )
+//        return new LoanResponse();
+//    }
 
 }

@@ -12,9 +12,10 @@ public interface LoanMapper {
 
     LoanMapper INSTANCE = Mappers.getMapper(LoanMapper.class);
 
+    @Mapping(target = "bookItem.id", source = "bookItemId")
+    @Mapping(target = "member.id", source = "memberId")
     Loan loanCreateRequestToLoan(LoanCreateRequest loanRequest);
 
     LoanResponse createLoanRequestToLoanResponse(Loan loan);
-
 
 }

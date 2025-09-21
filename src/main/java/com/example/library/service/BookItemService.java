@@ -19,6 +19,6 @@ public class BookItemService {
     }
 
     public long getAvailableCopies(BookItem bookItem){
-        return bookItemRepository.countByBookIdAndBookStatus(bookItem.getId(), bookItem.getBookStatus());
+        return bookItemRepository.countByBookIdAndBookStatus(bookItem.getId(), BookStatus.ACTIVE);
     }
 }

@@ -1,26 +1,27 @@
 package com.example.library.dto.loan.request;
 
-import com.example.library.entity.BookItem;
-import com.example.library.entity.Member;
+import jakarta.validation.constraints.Positive;
 
 public class LoanCreateRequest {
 
-    private BookItem bookItems;
-    private Member member;
+    @Positive
+    private Integer bookItemId;
+    @Positive
+    private Integer memberId;
 
-    public BookItem getBookItems() {
-        return bookItems;
+    public Integer getBookItemId() {
+        return bookItemId;
     }
 
-    public void setBookItems(BookItem bookItems) {
-        this.bookItems = bookItems;
+    public void setBookItemId(Integer bookItemId) {
+        this.bookItemId = bookItemId;
     }
 
-    public Member getMember() {
-        return member;
+    public Integer getMemberId() {
+        return memberId;
     }
 
-    public void setMember(Member member) {
-        this.member = member;
+    public void setMemberId(Integer memberId) {
+        this.memberId = memberId;
     }
 }

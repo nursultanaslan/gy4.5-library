@@ -1,12 +1,15 @@
 package com.example.library.rules;
 
+import com.example.library.entity.Loan;
 import com.example.library.entity.Member;
 import com.example.library.entity.enums.LoanStatus;
 import com.example.library.repository.LoanRepository;
 import com.example.library.repository.MemberRepository;
 import org.springframework.stereotype.Component;
+import org.webjars.NotFoundException;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 @Component
 public class LoanBusinessRules {
@@ -41,5 +44,21 @@ public class LoanBusinessRules {
 
         return loanDate.plusDays(N);
     }
+
+    public Loan loanShouldExist(int loanId){
+        return loanRepository.findById(loanId)
+                .orElseThrow(()-> new NotFoundException("Bu id ile ilgili ödünç kaydı bulunamadı"));
+    }
+
+//    public double calcFineAmount(LocalDate loanDate, LocalDate returnDate){
+//        double fineAmount = 0;
+//
+//        if(returnDate.isAfter(loanDate)){
+//            long daysBetween = ChronoUnit.DAYS.between(loanDate, returnDate);
+//            double pay = 5.0;
+//            fineAmount = daysBetween * pay;
+//        }
+//        return fineAmount;
+//    }
 
 }
