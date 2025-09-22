@@ -1,5 +1,6 @@
 package com.example.library.rules;
 
+import com.example.library.core.exception.type.BusinessException;
 import com.example.library.entity.Loan;
 import com.example.library.entity.Member;
 import com.example.library.entity.enums.LoanStatus;
@@ -27,7 +28,7 @@ public class LoanBusinessRules {
         boolean exists = loanRepository.existsByMemberIdAndBookItemIdAndLoanStatus(memberId, bookId, LoanStatus.OPEN);
 
         if (exists){
-            throw new RuntimeException("Üye bu kitabı zaten ödünç almıştır ve hala iade etmemiştir. " +
+            throw new BusinessException("Üye bu kitabı zaten ödünç almıştır ve hala iade etmemiştir. " +
                     "İade edilmden yeni bir ödünç kaydı oluşturulamaz");
         }
     }

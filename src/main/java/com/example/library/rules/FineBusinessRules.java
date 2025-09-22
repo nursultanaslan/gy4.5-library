@@ -1,5 +1,6 @@
 package com.example.library.rules;
 
+import com.example.library.core.exception.type.BusinessException;
 import com.example.library.repository.FineRepository;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +17,7 @@ public class FineBusinessRules {
 
         boolean exists = fineRepository.existsByMemberIdAndIsPaidIsFalse(memberId);
         if (exists){
-            throw new RuntimeException("Kullanıcının ödenmemiş cezası bulunmakta, yeni ödünç alamaz.");
+            throw new BusinessException("Kullanıcının ödenmemiş cezası bulunmakta, yeni ödünç alamaz.");
         }
     }
 }

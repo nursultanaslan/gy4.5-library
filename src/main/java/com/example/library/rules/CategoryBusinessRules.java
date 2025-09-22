@@ -1,5 +1,6 @@
 package com.example.library.rules;
 
+import com.example.library.core.exception.type.BusinessException;
 import com.example.library.entity.Category;
 import com.example.library.repository.CategoryRepository;
 import org.springframework.stereotype.Component;
@@ -25,7 +26,7 @@ public class CategoryBusinessRules {
                 .orElse(null);
 
         if(category != null){
-            throw new RuntimeException("Bu isimde bir kategori zaten bulunmakta.");
+            throw new BusinessException("Bu isimde bir kategori zaten bulunmakta.");
         }
     }
 

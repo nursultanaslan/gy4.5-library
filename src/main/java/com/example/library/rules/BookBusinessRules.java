@@ -1,5 +1,6 @@
 package com.example.library.rules;
 
+import com.example.library.core.exception.type.BusinessException;
 import com.example.library.entity.Book;
 import com.example.library.entity.enums.BookStatus;
 import com.example.library.repository.BookRepository;
@@ -27,7 +28,7 @@ public class BookBusinessRules {
         Book bookIsbn = bookRepository.findByIsbn(isbn)
                 .orElse(null);
         if(bookIsbn != null){
-            throw new RuntimeException("ISBN numarası eşsiz olmalıdır. Bu ISBN numarası zaten bulunmaktadır.");
+            throw new BusinessException("ISBN numarası eşsiz olmalıdır. Bu ISBN numarası zaten bulunmaktadır.");
         }
 
     }
