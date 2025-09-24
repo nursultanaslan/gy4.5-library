@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
-import java.util.List;
 
 
 public class CreateBookRequest {
@@ -20,14 +19,14 @@ public class CreateBookRequest {
 
     private String imageUrl;
 
-    private BookStatus bookStatus;
+    private BookStatus bookStatus = BookStatus.ACTIVE;
 
     @NotNull
     private Integer publisherId;
     @NotNull
     private Integer categoryId;
     @NotNull
-    private List<Integer> authorId;
+    private Integer authorId;
 
     public String getTitle() {
         return title;
@@ -86,11 +85,11 @@ public class CreateBookRequest {
     }
 
 
-    public List<Integer> getAuthorId() {
+    public Integer getAuthorId() {
         return authorId;
     }
 
-    public void setAuthorId(List<Integer> authorId) {
+    public void setAuthorId(Integer authorId) {
         this.authorId = authorId;
     }
 }

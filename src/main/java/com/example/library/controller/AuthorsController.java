@@ -37,7 +37,7 @@ public class AuthorsController {
         return authorService.getByIdAuthor(id);
     }
 
-    @PatchMapping
+    @PutMapping
     public UpdatedAuthorResponse updateAuthor(@RequestBody UpdateAuthorRequest updateRequest){
         return authorService.updateAuthor(updateRequest);
     }

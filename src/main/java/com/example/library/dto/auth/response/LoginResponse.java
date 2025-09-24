@@ -1,4 +1,4 @@
-package com.example.library.dto.user.response;
+package com.example.library.dto.auth.response;
 
 public class LoginResponse {
 

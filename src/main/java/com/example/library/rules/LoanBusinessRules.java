@@ -35,6 +35,7 @@ public class LoanBusinessRules {
 
     public LocalDate calcDueDate(Member member){
         LocalDate loanDate = LocalDate.now();
+        //Date loanDate = new Date(System.currentTimeMillis());
 
         Member member1 = memberRepository.findByMembershipLevel(member.getMembershipLevel());
 

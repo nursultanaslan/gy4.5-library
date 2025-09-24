@@ -24,6 +24,7 @@ public class Book {
     private String imageUrl;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "book_status", nullable = false)
     private BookStatus bookStatus;
 
     @ManyToOne()
@@ -34,14 +35,9 @@ public class Book {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    //Kitabın yazarları
-    //Owner Side - Book
-    @ManyToMany()
-    @JoinTable(
-            name = "book_author",
-            joinColumns = @JoinColumn(name = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "author_id"))
-    private List<Author> authors;
+    @ManyToOne()
+    @JoinColumn(name = "author_id", nullable = false)
+    private Author author;
 
     @OneToMany(mappedBy = "book")
     private List<BookItem> bookItems;
@@ -113,12 +109,12 @@ public class Book {
         this.category = category;
     }
 
-    public List<Author> getAuthors() {
-        return authors;
+    public Author getAuthor() {
+        return author;
     }
 
-    public void setAuthors(List<Author> authors) {
-        this.authors = authors;
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 
     public List<BookItem> getBookItems() {

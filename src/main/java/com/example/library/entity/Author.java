@@ -18,7 +18,7 @@ public class Author {
     private String bio;
 
     //Yazarın kitapları
-    @ManyToMany(mappedBy = "authors")
+    @OneToMany(mappedBy = "author")
     List<Book> books;
 
     public Integer getId() {

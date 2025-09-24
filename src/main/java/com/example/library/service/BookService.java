@@ -15,9 +15,6 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-
-import java.util.List;
-
 @Service
 @Validated
 public class BookService {
@@ -41,27 +38,43 @@ public class BookService {
     }
 
     public CreatedBookResponse add(@Valid CreateBookRequest request){
+
         bookBusinessRules.isbnMustBeUnique(request.getIsbn());
-        Book book = bookMapper.createBookRequestToBook(request);
 
-        List<Author> authors = authorService.getAuthorsByIds(request.getAuthorId());
-        book.setAuthors(authors);
+//        Book book = bookMapper.createBookRequestToBook(request);
+        //Manual Mapping
+        Book book = new Book();
+        book.setTitle(request.getTitle());
+        book.setTotalPage(request.getTotalPage());
+        book.setIsbn(request.getIsbn());
+        book.setImageUrl(request.getImageUrl());
+        book.setBookStatus(request.getBookStatus());
 
-        bookRepository.save(book);
+        Publisher publisher = new Publisher();
+        publisher.setId(request.getPublisherId());
+        book.setPublisher(publisher);
 
-        return bookMapper.toCreatedBookResponse(book);
+        Category category = new Category();
+        category.setId(request.getCategoryId());
+        book.setCategory(category);
+
+        Author author = new Author();
+        author.setId(request.getAuthorId());
+        book.setAuthor(author);
+
+        return bookMapper.toCreatedBookResponse(bookRepository.save(book));
     }
 
     public UpdatedBookResponse update(@Valid UpdateBookRequest request){
 
         Book book = bookBusinessRules.bookShouldExistWithGivenId(request.getId());
         book = bookMapper.updateBookRequesToBook(request);
-        bookRepository.save(book);
 
-        return bookMapper.toUpdatedBookResponse(book);
+        return bookMapper.toUpdatedBookResponse(bookRepository.save(book));
     }
 
-    public BookResponse getByIdCopyCounts(int bookId){
+    public BookResponse getByIdCopiesCount(int bookId){
+
         Book book = bookBusinessRules.bookShouldExistWithGivenId(bookId);
 
         long totalCopies = bookItemRepository.countByBookId(bookId);
@@ -76,12 +89,12 @@ public class BookService {
 
     }
 
-    public long getTotalCopies(Book book){
-        return bookItemRepository.countByBookId(book.getId());
-    }
-
-    public long getAvailableCopies(Book book){
-        return bookItemRepository.countByBookIdAndBookStatus(book.getId(), BookStatus.ACTIVE);
-    }
+//    public long getTotalCopies(Book book){
+//        return bookItemRepository.countByBookId(book.getId());
+//    }
+//
+//    public long getAvailableCopies(Book book){
+//        return bookItemRepository.countByBookIdAndBookStatus(book.getId(), BookStatus.ACTIVE);
+//    }
 
 }

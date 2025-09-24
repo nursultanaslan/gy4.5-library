@@ -30,4 +30,6 @@ public interface BookMapper {
     UpdatedBookResponse toUpdatedBookResponse(Book book);
 
     BookResponse bookToBookResponse(Book book);
+
+    Book createBookRequesttoBook(CreateBookRequest request);
 }

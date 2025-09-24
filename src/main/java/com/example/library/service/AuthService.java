@@ -1,10 +1,11 @@
 package com.example.library.service;
 
 import com.example.library.core.exception.type.BusinessException;
-import com.example.library.dto.user.request.LoginRequest;
-import com.example.library.dto.user.request.RegisterRequest;
-import com.example.library.dto.user.response.LoginResponse;
-import com.example.library.dto.user.response.RegisterResponse;
+import com.example.library.core.jwt.JwtUtil;
+import com.example.library.dto.auth.request.LoginRequest;
+import com.example.library.dto.auth.request.RegisterRequest;
+import com.example.library.dto.auth.response.LoginResponse;
+import com.example.library.dto.auth.response.RegisterResponse;
 import com.example.library.entity.User;
 import com.example.library.repository.UserRepository;
 import jakarta.validation.Valid;
@@ -14,15 +15,18 @@ import org.springframework.validation.annotation.Validated;
 
 @Service
 @Validated
-public class UserService {
+public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
-    public UserService(UserRepository userRepository,
-                       PasswordEncoder passwordEncoder) {
+    public AuthService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder,
+                       JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
     }
 
     public RegisterResponse register(@Valid RegisterRequest request){
@@ -49,6 +53,7 @@ public class UserService {
     }
 
     public LoginResponse login(LoginRequest request){
+
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(()-> new BusinessException("Wrong username or password."));
 
@@ -57,9 +62,14 @@ public class UserService {
         }
 
         LoginResponse response = new LoginResponse();
-        response.setToken("2727");
+        //login başarılı -> token oluşturulur.
+        response.setToken(jwtUtil.generateToken(user.getUsername()));
 
         return response;
 
+    }
+
+    public Boolean validateToken(String token){
+        return jwtUtil.validateToken(token);
     }
 }

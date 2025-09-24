@@ -53,7 +53,7 @@ public class AuthorService {
     }
 
     public List<Author> getAuthorsByIds(List<Integer> ids){
-        return authorBusinessRules.authorsShouldExistWithGiveIds(ids);
+        return authorBusinessRules.getAuthorsShouldExistWithGivenIds(ids);
     }
 
     public UpdatedAuthorResponse updateAuthor(@Valid UpdateAuthorRequest updateRequest){

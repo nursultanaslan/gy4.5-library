@@ -22,7 +22,7 @@ public class AuthorBusinessRules {
 
     }
 
-    public List<Author> authorsShouldExistWithGiveIds(List<Integer> ids){
+    public List<Author> getAuthorsShouldExistWithGivenIds(List<Integer> ids){
         List<Author> authors = authorRepository.findAllById(ids);
         if (authors.size() != ids.size()){
             throw new NotFoundException("Bir veya daha fazla yazar bulunamadı!");

@@ -30,7 +30,6 @@ public class BookBusinessRules {
         if(bookIsbn != null){
             throw new BusinessException("ISBN numarası eşsiz olmalıdır. Bu ISBN numarası zaten bulunmaktadır.");
         }
-
     }
 
     public void checkCopies(long totalCopies, long availableCopies){
