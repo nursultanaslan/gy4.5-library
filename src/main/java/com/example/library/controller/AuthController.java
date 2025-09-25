@@ -3,7 +3,7 @@ package com.example.library.controller;
 import com.example.library.dto.auth.request.LoginRequest;
 import com.example.library.dto.auth.request.RegisterRequest;
 import com.example.library.dto.auth.response.LoginResponse;
-import com.example.library.dto.auth.response.RegisterResponse;
+import com.example.library.dto.auth.response.RegisteredResponse;
 import com.example.library.service.AuthService;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +18,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public RegisterResponse register(@RequestBody RegisterRequest request){
+    public RegisteredResponse register(@RequestBody RegisterRequest request){
         return authService.register(request);
     }
 

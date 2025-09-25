@@ -1,15 +1,15 @@
 package com.example.library.dto.auth.response;
 
-public class RegisterResponse {
+public class RegisteredResponse {
 
     private String firstName;
     private String lastName;
     private String username;
 
-    public RegisterResponse() {
+    public RegisteredResponse() {
     }
 
-    public RegisterResponse(String firstName, String lastName, String username) {
+    public RegisteredResponse(String firstName, String lastName, String username) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;

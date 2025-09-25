@@ -2,6 +2,7 @@ package com.example.library.core.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,6 +35,8 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/api/v1/auth/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/v1/books").hasAnyAuthority("Admin", "Book.Create")
+                                .requestMatchers(HttpMethod.GET, "/api/v1/books").hasAnyAuthority("Admin", "Book.Read")
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable); //csrf koruması devre dışı bırakıldı

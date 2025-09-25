@@ -5,13 +5,15 @@ import com.example.library.core.jwt.JwtUtil;
 import com.example.library.dto.auth.request.LoginRequest;
 import com.example.library.dto.auth.request.RegisterRequest;
 import com.example.library.dto.auth.response.LoginResponse;
-import com.example.library.dto.auth.response.RegisterResponse;
+import com.example.library.dto.auth.response.RegisteredResponse;
 import com.example.library.entity.User;
 import com.example.library.repository.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+
+import java.util.List;
 
 @Service
 @Validated
@@ -29,7 +31,7 @@ public class AuthService {
         this.jwtUtil = jwtUtil;
     }
 
-    public RegisterResponse register(@Valid RegisterRequest request){
+    public RegisteredResponse register(@Valid RegisterRequest request){
 
         User user = new User();
         user.setFirstName(request.getFirstName());
@@ -43,7 +45,7 @@ public class AuthService {
 
         userRepository.save(user);
 
-        RegisterResponse response = new RegisterResponse();
+        RegisteredResponse response = new RegisteredResponse();
         response.setFirstName(user.getFirstName());
         response.setLastName(user.getLastName());
         response.setUsername(user.getUsername());
@@ -61,9 +63,15 @@ public class AuthService {
             throw new BusinessException("Wrong username or password.");
         }
 
+        List<String> roles = user
+                .getOperationClaims()
+                .stream()
+                .map(o -> o.getName())
+                .toList();
+
         LoginResponse response = new LoginResponse();
         //login başarılı -> token oluşturulur.
-        response.setToken(jwtUtil.generateToken(user.getUsername()));
+        response.setToken(jwtUtil.generateToken(user.getUsername(), roles));
 
         return response;
 

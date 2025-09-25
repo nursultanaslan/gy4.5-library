@@ -1,6 +1,5 @@
 package com.example.library.entity;
 
-import com.example.library.entity.enums.MemberRole;
 import com.example.library.entity.enums.MemberStatus;
 import com.example.library.entity.enums.MembershipLevel;
 import jakarta.persistence.*;
@@ -34,9 +33,6 @@ public class Member {
     @Enumerated(EnumType.STRING)
     @Column(name = "member_status")
     private MemberStatus memberStatus;
-
-    @Enumerated(EnumType.STRING)
-    private MemberRole role;
 
     @OneToMany(mappedBy = "member")
     private List<Loan> loans;
@@ -119,13 +115,6 @@ public class Member {
         this.memberStatus = memberStatus;
     }
 
-    public MemberRole getRole() {
-        return role;
-    }
-
-    public void setRole(MemberRole role) {
-        this.role = role;
-    }
 
     public List<Loan> getLoans() {
         return loans;

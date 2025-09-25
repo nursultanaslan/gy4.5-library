@@ -3,36 +3,35 @@ package com.example.library.core.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class JwtUtil {
 
-    private final String SECRET_KEY = "956b2c913e70678e200ddb671f1132288b51061dfdd71fd2c4e5b4ded697086d8d7fd2436ea30aba8affd05b1c443cbd5ce6eb235f9fe7197656b0a337ddf15b";
+    @Value("${jwt.secret}")
+    private String SECRET_KEY;
 
     //Jwt'yi üretecek kod
-    public String generateToken(String username){
+    public String generateToken(String username, List<String> roles){
         Date expirationDate = new Date(System.currentTimeMillis() + 1000*60*60);
         //claims() : jwt'nin payload kısmına ekleyecegimiz extra bilgiler.
         HashMap<String, Object> claims = new HashMap<>();
-        claims.put("username", username);
-        claims.put("admin", true);
+        claims.put("roles", roles);
 
-        SecretKey secretKey = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
-        String jwt = Jwts
+        return Jwts
                 .builder()
                 .subject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(expirationDate)
                 .claims(claims)
-                .signWith(secretKey)
+                .signWith(getSecretKey())
                 .compact();
-
-        return jwt;
     }
 
     public Boolean validateToken(String token){
@@ -48,11 +47,10 @@ public class JwtUtil {
     }
 
     private Claims extractAllClaims(String token){
-        SecretKey secretKey = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
         return Jwts
                 .parser()
-                .verifyWith(secretKey)
+                .verifyWith(getSecretKey())
                 .build()
                 .parseSignedClaims(token)  //tokenin imzalanmış claimlerini al
                 .getPayload();             //payload kısmını bana ver
@@ -61,5 +59,15 @@ public class JwtUtil {
     public String extractUsername(String token){
         Claims claims = extractAllClaims(token);
         return claims.getSubject();
+    }
+
+    public List<String> extractRoles(String token){
+        Claims claims = extractAllClaims(token);
+        return claims.get("roles", List.class);
+    }
+
+    //key oluşturma funct.
+    private SecretKey getSecretKey(){
+        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
 }

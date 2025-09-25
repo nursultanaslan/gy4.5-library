@@ -1,6 +1,11 @@
 package com.example.library.entity;
 
+import com.example.library.entity.enums.MemberStatus;
+import com.example.library.entity.enums.MembershipLevel;
 import jakarta.persistence.*;
+
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -27,6 +32,31 @@ public class User {
 
     @Column(name = "phone")
     private String phone;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "membership_level")
+    private MembershipLevel membershipLevel;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "member_status")
+    private MemberStatus memberStatus;
+
+    @OneToMany(mappedBy = "member")
+    private List<Loan> loans;
+
+    @OneToMany(mappedBy = "member")
+    private List<Fine> fines;
+
+    @OneToMany(mappedBy = "member")
+    private List<Reservation> reservations;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_operation_claims",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "operation_claim_id")
+    )
+    private Set<OperationClaim> operationClaims;
 
     public Integer getId() {
         return id;
@@ -82,5 +112,53 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public MembershipLevel getMembershipLevel() {
+        return membershipLevel;
+    }
+
+    public void setMembershipLevel(MembershipLevel membershipLevel) {
+        this.membershipLevel = membershipLevel;
+    }
+
+    public MemberStatus getMemberStatus() {
+        return memberStatus;
+    }
+
+    public void setMemberStatus(MemberStatus memberStatus) {
+        this.memberStatus = memberStatus;
+    }
+
+    public List<Loan> getLoans() {
+        return loans;
+    }
+
+    public void setLoans(List<Loan> loans) {
+        this.loans = loans;
+    }
+
+    public List<Fine> getFines() {
+        return fines;
+    }
+
+    public void setFines(List<Fine> fines) {
+        this.fines = fines;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
+    public Set<OperationClaim> getOperationClaims() {
+        return operationClaims;
+    }
+
+    public void setOperationClaims(Set<OperationClaim> operationClaims) {
+        this.operationClaims = operationClaims;
     }
 }

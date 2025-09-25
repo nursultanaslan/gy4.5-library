@@ -13,10 +13,10 @@ public class RegisterRequest {
     private String lastName;
     @NotBlank
     @Size(min = 6, max = 20)
-    private String username;
+    private String username;  //business rules yaz anlamlı hata mesajı olması icin. aksi takdirde düz 400 dönüyor
     @NotBlank
     @Size(min= 8, max = 20)
-    private String password;
+    private String password;  //business rules yaz anlamlı hata mesajı olması icin.
     @NotBlank
     @Email
     private String email;

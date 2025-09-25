@@ -38,9 +38,8 @@ public class JwtFilter extends OncePerRequestFilter {
             String jwt = authorizationHeader.substring(7);
 
             if(jwtUtil.validateToken(jwt)){
-
-                List<String> roles = new ArrayList<>();
-                roles.add("ROLE_USER");
+                //Burada fake role oluşturduk normalde veri tbanından gelecek
+                List<String> roles = jwtUtil.extractRoles(jwt);
 
                 List<SimpleGrantedAuthority> authorities = roles.stream().map(SimpleGrantedAuthority::new).toList();
 
