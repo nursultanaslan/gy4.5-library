@@ -4,6 +4,7 @@ import com.example.library.dto.book.request.CreateBookRequest;
 import com.example.library.dto.book.request.UpdateBookRequest;
 import com.example.library.dto.book.response.BookResponse;
 import com.example.library.dto.book.response.CreatedBookResponse;
+import com.example.library.dto.book.response.GetListBookResponse;
 import com.example.library.dto.book.response.UpdatedBookResponse;
 import com.example.library.entity.*;
 import com.example.library.entity.enums.BookStatus;
@@ -14,6 +15,9 @@ import com.example.library.rules.BookBusinessRules;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Validated
@@ -37,18 +41,36 @@ public class BookService {
         this.bookItemRepository = bookItemRepository;
     }
 
+    public List<GetListBookResponse> getList(){
+        List<Book> books = bookRepository.findAll();
+        List<GetListBookResponse> bookResponseList = new ArrayList<>();
+        for (Book book: books){
+            GetListBookResponse response = new GetListBookResponse();
+            response.setId(book.getId());
+            response.setTitle(book.getTitle());
+            response.setTotalPage(book.getTotalPage());
+            response.setIsbn(book.getIsbn());
+            response.setImageUrl(book.getImageUrl());
+            response.setBookStatus(book.getBookStatus());
+            response.setPublisher(book.getPublisher());
+            response.setCategory(book.getCategory());
+            response.setAuthor(book.getAuthor());
+            bookResponseList.add(response);
+        }
+        return bookResponseList;
+    }
+
     public CreatedBookResponse add(@Valid CreateBookRequest request){
 
         bookBusinessRules.isbnMustBeUnique(request.getIsbn());
 
-//        Book book = bookMapper.createBookRequestToBook(request);
         //Manual Mapping
         Book book = new Book();
         book.setTitle(request.getTitle());
         book.setTotalPage(request.getTotalPage());
         book.setIsbn(request.getIsbn());
         book.setImageUrl(request.getImageUrl());
-        book.setBookStatus(request.getBookStatus());
+        book.setBookStatus(BookStatus.getDefault());
 
         Publisher publisher = new Publisher();
         publisher.setId(request.getPublisherId());
@@ -88,13 +110,5 @@ public class BookService {
         return bookResponse;
 
     }
-
-//    public long getTotalCopies(Book book){
-//        return bookItemRepository.countByBookId(book.getId());
-//    }
-//
-//    public long getAvailableCopies(Book book){
-//        return bookItemRepository.countByBookIdAndBookStatus(book.getId(), BookStatus.ACTIVE);
-//    }
 
 }

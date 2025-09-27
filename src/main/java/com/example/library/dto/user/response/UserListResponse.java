@@ -1,32 +1,32 @@
-package com.example.library.dto.member.request;
+package com.example.library.dto.user.response;
 
-import com.example.library.entity.enums.MemberRole;
-import jakarta.validation.constraints.*;
-
-public class CreateMemberRequest {
-
-    @NotBlank
+public class UserListResponse {
+    private Integer id;
     private String firstName;
-    @NotBlank
     private String lastName;
-    @NotBlank
-    @Size(min = 4, max = 9)
     private String username;
-
-    @NotBlank
-    @Size(min = 8, max = 10)
-    private String password;
-
-    @NotBlank
-    @Email
     private String email;
-
-    @NotBlank
-    @Pattern(regexp = "^5[0-9]{9}$")
     private String phone;
 
-    @NotNull
-    private MemberRole role;
+    public UserListResponse() {
+    }
+
+    public UserListResponse(Integer id, String firstName, String lastName, String username, String email, String phone) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.email = email;
+        this.phone = phone;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -52,14 +52,6 @@ public class CreateMemberRequest {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -74,13 +66,5 @@ public class CreateMemberRequest {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public MemberRole getRole() {
-        return role;
-    }
-
-    public void setRole(MemberRole role) {
-        this.role = role;
     }
 }

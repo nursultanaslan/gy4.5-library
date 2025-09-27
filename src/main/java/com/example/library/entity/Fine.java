@@ -20,8 +20,8 @@ public class Fine {
     private Boolean isPaid;
 
     @ManyToOne()
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @OneToOne()
     @JoinColumn(name = "loan_id", nullable = false)
@@ -59,19 +59,19 @@ public class Fine {
         isPaid = paid;
     }
 
-    public Member getMember() {
-        return member;
+    public User getUser() {
+        return user;
     }
 
-    public void setMember(Member member) {
-        this.member = member;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public Loan getBorrow() {
+    public Loan getLoan() {
         return loan;
     }
 
-    public void setBorrow(Loan loan) {
+    public void setLoan(Loan loan) {
         this.loan = loan;
     }
 }

@@ -21,16 +21,16 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
 
     @Column(name = "password")
     private String password;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "phone")
+    @Column(name = "phone", unique = true)
     private String phone;
 
     @Enumerated(EnumType.STRING)
@@ -41,13 +41,13 @@ public class User {
     @Column(name = "member_status")
     private MemberStatus memberStatus;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "user")
     private List<Loan> loans;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "user")
     private List<Fine> fines;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "user")
     private List<Reservation> reservations;
 
     @ManyToMany(fetch = FetchType.EAGER)

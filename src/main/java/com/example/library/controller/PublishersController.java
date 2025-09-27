@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/publishers")
-public class PublisherController {
+public class PublishersController {
 
     private final PublisherService publisherService;
 
-    public PublisherController(PublisherService publisherService) {
+    public PublishersController(PublisherService publisherService) {
         this.publisherService = publisherService;
     }
 

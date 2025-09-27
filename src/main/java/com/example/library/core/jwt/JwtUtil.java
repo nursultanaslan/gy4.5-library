@@ -45,7 +45,7 @@ public class JwtUtil {
             return false;
         }
     }
-
+    //bu methodu birçok yerde kullanacagız
     private Claims extractAllClaims(String token){
 
         return Jwts

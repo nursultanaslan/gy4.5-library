@@ -29,8 +29,8 @@ public class Loan {
     private BookItem bookItem;
 
     @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @OneToOne(mappedBy = "loan")
     private Fine fine;
@@ -83,12 +83,12 @@ public class Loan {
         this.bookItem = bookItem;
     }
 
-    public Member getMember() {
-        return member;
+    public User getUser() {
+        return user;
     }
 
-    public void setMember(Member member) {
-        this.member = member;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Fine getFine() {

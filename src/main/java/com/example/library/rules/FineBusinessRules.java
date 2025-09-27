@@ -13,11 +13,11 @@ public class FineBusinessRules {
         this.fineRepository = fineRepository;
     }
 
-    public void checkFineIsPaid(int memberId){
-
-        boolean exists = fineRepository.existsByMemberIdAndIsPaidIsFalse(memberId);
-        if (exists){
-            throw new BusinessException("Kullanıcının ödenmemiş cezası bulunmakta, yeni ödünç alamaz.");
-        }
-    }
+//    public void checkFineIsPaid(int memberId){
+//
+//        boolean exists = fineRepository.existsByMemberIdAndIsPaidIsFalse(memberId);
+//        if (exists){
+//            throw new BusinessException("Kullanıcının ödenmemiş cezası bulunmakta, yeni ödünç alamaz.");
+//        }
+//    }
 }

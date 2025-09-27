@@ -1,30 +1,25 @@
-package com.example.library.dto.member.request;
+package com.example.library.dto.user.response;
 
-import jakarta.validation.constraints.*;
+public class UpdatedUserResponse {
 
-public class UpdateMemberRequest {
-
-    @Positive
     private Integer id;
-    @NotBlank
     private String firstName;
-    @NotBlank
     private String lastName;
-    @NotBlank
-    @Size(min = 4, max = 9)
     private String username;
-
-    @NotBlank
-    @Size(min = 8, max = 10)
-    private String password;
-
-    @NotBlank
-    @Email
     private String email;
-
-    @NotBlank
-    @Pattern(regexp = "^5[0-9]{9}$")
     private String phone;
+
+    public UpdatedUserResponse() {
+    }
+
+    public UpdatedUserResponse(Integer id, String firstName, String lastName, String username, String email, String phone) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.email = email;
+        this.phone = phone;
+    }
 
     public Integer getId() {
         return id;
@@ -56,14 +51,6 @@ public class UpdateMemberRequest {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getEmail() {

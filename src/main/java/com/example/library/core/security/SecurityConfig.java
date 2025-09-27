@@ -35,8 +35,9 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/api/v1/books").hasAnyAuthority("Admin", "Book.Create")
-                                .requestMatchers(HttpMethod.GET, "/api/v1/books").hasAnyAuthority("Admin", "Book.Read")
+                                .requestMatchers(HttpMethod.POST, "/api/v1/books").hasAnyAuthority("Admin", "book.create")
+                                .requestMatchers(HttpMethod.GET, "/api/v1/books").hasAnyAuthority("Admin", "book.read")
+                                .requestMatchers(HttpMethod.GET, "/api/v1/users").hasAnyAuthority("Admin", "user.read")
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable); //csrf koruması devre dışı bırakıldı

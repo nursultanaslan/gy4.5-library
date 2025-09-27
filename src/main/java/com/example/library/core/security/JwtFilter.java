@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 //OncePerRequestFilter -> Her istek başına bir filtre
@@ -38,10 +37,13 @@ public class JwtFilter extends OncePerRequestFilter {
             String jwt = authorizationHeader.substring(7);
 
             if(jwtUtil.validateToken(jwt)){
-                //Burada fake role oluşturduk normalde veri tbanından gelecek
+
                 List<String> roles = jwtUtil.extractRoles(jwt);
 
-                List<SimpleGrantedAuthority> authorities = roles.stream().map(SimpleGrantedAuthority::new).toList();
+                List<SimpleGrantedAuthority> authorities = roles
+                        .stream()
+                        .map(SimpleGrantedAuthority::new)
+                        .toList();
 
                 //spring securitye bilgi geçecegim burada kullanıcı giriş yaptı jwtsi dogru diye
                 UsernamePasswordAuthenticationToken authenticationToken =

@@ -12,6 +12,7 @@ public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
     @Column(name = "reservation_date")
@@ -27,8 +28,8 @@ public class Reservation {
     private Book book;
 
     @ManyToOne()
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     public Integer getId() {
         return id;
@@ -70,11 +71,11 @@ public class Reservation {
         this.book = book;
     }
 
-    public Member getMember() {
-        return member;
+    public User getUser() {
+        return user;
     }
 
-    public void setMember(Member member) {
-        this.member = member;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

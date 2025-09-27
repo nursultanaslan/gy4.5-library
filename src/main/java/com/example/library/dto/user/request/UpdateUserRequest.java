@@ -1,23 +1,21 @@
-package com.example.library.dto.auth.request;
+package com.example.library.dto.user.request;
 
-import com.example.library.entity.enums.MemberStatus;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
-public class RegisterRequest {
+public class UpdateUserRequest {
 
+    @Positive
+    private Integer id;
     @NotBlank
     private String firstName;
     @NotBlank
     private String lastName;
     @NotBlank
-    @Size(min = 6, max = 20)
-    private String username;  //business rules yaz anlamlı hata mesajı olması icin. aksi takdirde düz 400 dönüyor
+    @Size(min = 4, max = 15)
+    private String username;
     @NotBlank
-    @Size(min= 8, max = 20)
-    private String password;  //business rules yaz anlamlı hata mesajı olması icin.
+    @Size(min = 6, max = 20)
+    private String password;
     @NotBlank
     @Email
     private String email;
@@ -25,7 +23,13 @@ public class RegisterRequest {
     @Pattern(regexp = "^5[0-9]{9}$")
     private String phone;
 
-    private MemberStatus memberStatus;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -73,13 +77,5 @@ public class RegisterRequest {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public MemberStatus getMemberStatus() {
-        return memberStatus;
-    }
-
-    public void setMemberStatus(MemberStatus memberStatus) {
-        this.memberStatus = memberStatus;
     }
 }

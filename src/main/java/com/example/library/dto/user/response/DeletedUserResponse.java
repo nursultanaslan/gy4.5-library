@@ -1,13 +1,13 @@
-package com.example.library.dto.member.response;
+package com.example.library.dto.user.response;
 
-public class DeletedMemberResponse {
+public class DeletedUserResponse {
 
     private Integer id;
 
-    public DeletedMemberResponse() {
+    public DeletedUserResponse() {
     }
 
-    public DeletedMemberResponse(Integer id) {
+    public DeletedUserResponse(Integer id) {
         this.id = id;
     }
 
